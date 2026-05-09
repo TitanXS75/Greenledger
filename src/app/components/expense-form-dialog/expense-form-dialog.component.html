@@ -1,0 +1,118 @@
+<h2 mat-dialog-title>
+  {{ !data.expense ? 'Add New Expense' : 'Edit Expense' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="expenseForm" class="expense-form">
+    <!-- Quick Amounts Section -->
+    <div class="quick-amounts-section">
+      <div class="section-header">
+        <label>Quick Select Amount</label>
+        <button mat-icon-button type="button" color="primary" (click)="toggleQuickAmountInput()" *ngIf="quickAmounts.length < 4">
+          <mat-icon>{{ showQuickAmountInput ? 'close' : 'add_circle' }}</mat-icon>
+        </button>
+      </div>
+      
+      <div class="quick-amounts-list">
+        <div class="amt-chip" *ngFor="let amt of quickAmounts; let i = index" (click)="setAmount(amt)">
+          <span>₹{{ amt }}</span>
+          <button class="remove-btn" (click)="removeQuickAmount(i, $event)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Manual Quick Amount Input -->
+      <div class="manual-amt-input" *ngIf="showQuickAmountInput">
+        <mat-form-field appearance="outline" class="small-field">
+          <mat-label>Enter Amount</mat-label>
+          <input matInput type="number" [(ngModel)]="newQuickAmount" [ngModelOptions]="{standalone: true}" placeholder="0">
+        </mat-form-field>
+        <button mat-mini-fab color="primary" (click)="saveQuickAmount()" [disabled]="!newQuickAmount || newQuickAmount <= 0">
+          <mat-icon>check</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Amount Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Amount (₹)</mat-label>
+      <input matInput type="number" step="1" min="1" formControlName="amount" placeholder="0">
+      <mat-error *ngIf="amount?.hasError('required')">Amount is required</mat-error>
+      <mat-error *ngIf="amount?.hasError('min')">Amount must be at least ₹1</mat-error>
+    </mat-form-field>
+
+    <!-- Category Section -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="!showCustomCategoryInput">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="category" (selectionChange)="onCategoryChange($event)">
+        <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+        <mat-divider></mat-divider>
+        <mat-option value="CUSTOM">Add Custom...</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Custom Category Input with Save Button -->
+    <div class="custom-category-input" *ngIf="showCustomCategoryInput">
+      <mat-form-field appearance="outline" class="flex-grow">
+        <mat-label>New Category Name</mat-label>
+        <input matInput formControlName="newCategory" placeholder="e.g. Subscriptions">
+      </mat-form-field>
+      <div class="btn-group">
+        <button mat-icon-button color="warn" type="button" (click)="showCustomCategoryInput = false">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" type="button" (click)="saveCustomCategory()" [disabled]="!expenseForm.get('newCategory')?.value">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Description Field -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="2" placeholder="What was this for?"></textarea>
+      <mat-error *ngIf="description?.hasError('required')">Description is required</mat-error>
+    </mat-form-field>
+
+    <!-- Date Field -->
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="flex-grow">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Payment Mode -->
+    <div class="payment-mode-container">
+      <label>Payment Mode:</label>
+      <mat-radio-group formControlName="paymentMode">
+        <mat-radio-button *ngFor="let m of paymentModes" [value]="m">{{ m }}</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <div class="left-actions">
+    <button mat-button color="warn" *ngIf="data.expense" (click)="onDelete()" class="delete-btn">
+      <mat-icon>delete_outline</mat-icon>
+      Delete
+    </button>
+  </div>
+  
+  <div class="right-actions">
+    <button mat-button (click)="onCancel()" class="cancel-btn">Cancel</button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="onSubmit()" 
+      [disabled]="expenseForm.invalid"
+      class="submit-btn"
+    >
+      {{ !data.expense ? 'Add Expense' : 'Update' }}
+    </button>
+  </div>
+</mat-dialog-actions>

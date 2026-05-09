@@ -1,0 +1,95 @@
+<div class="tracker-container">
+  <mat-card class="main-card">
+    <mat-card-header class="tracker-header">
+      <div class="header-content">
+        <mat-card-title>Expenses</mat-card-title>
+        <p class="subtitle">Track and manage your spending</p>
+      </div>
+      <div class="header-actions">
+        <button mat-raised-button color="primary" (click)="openAddDialog()" class="add-btn">
+          <mat-icon>add</mat-icon>
+          <span>Add Expense</span>
+        </button>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Filters Section -->
+      <form [formGroup]="filterForm" class="filter-form">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search Description</mat-label>
+          <input matInput formControlName="searchText" placeholder="Search...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="category-field">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="category">
+            <mat-option [value]="null">All Categories</mat-option>
+            <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-button color="warn" (click)="clearFilters()" class="clear-btn">
+          <mat-icon>restart_alt</mat-icon>
+          <span>Clear</span>
+        </button>
+      </form>
+
+      <!-- Table Section -->
+      <div class="table-container">
+        <table mat-table [dataSource]="(filteredExpenses$ | async) || []" matSort>
+          
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let row">{{ row.date }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="cat-badge">{{ row.category }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let row" class="desc-cell">{{ row.description }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+            <td mat-cell *matCellDef="let row" class="amt-cell">₹{{ row.amount }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let row" class="actions-cell">
+              <button mat-icon-button color="primary" (click)="editExpense(row)" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button *ngIf="isAdmin" mat-icon-button color="warn" (click)="deleteExpense(row.id)" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        
+        <div class="empty-state" *ngIf="!(filteredExpenses$ | async)?.length">
+          <mat-icon>inbox</mat-icon>
+          <p>No expenses found</p>
+        </div>
+      </div>
+      
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons class="paginator"></mat-paginator>
+      
+      <div class="total-footer">
+        <span class="label">Total Amount</span>
+        <span class="value">₹{{ totalAmount$ | async }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

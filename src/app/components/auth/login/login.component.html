@@ -1,0 +1,109 @@
+<div class="login-page">
+  <div class="side-image-container">
+    <div class="image-overlay">
+      <div class="overlay-content">
+        <h1>Welcome to GreenLedger</h1>
+        <p>Track your expenses with sustainability in mind. Join thousands of users making better financial and environmental choices.</p>
+      </div>
+    </div>
+    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2622&auto=format&fit=crop" alt="Financial Planning" class="side-image">
+  </div>
+
+  <div class="form-container">
+    <mat-card class="login-card" data-test-id="login-card">
+      <mat-card-header>
+        <div class="logo-container">
+          <mat-icon class="leaf-icon">eco</mat-icon>
+          <mat-card-title>GreenLedger</mat-card-title>
+        </div>
+        <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+        <div class="demo-tip">
+          <mat-icon>info_outline</mat-icon>
+          <span>Use <b>demo&#64;greenledger.com</b> / <b>demo123</b> to test</span>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div *ngIf="error" class="error-message" data-test-id="error-message">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ error }}</span>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              data-test-id="email-input"
+              placeholder="your.email@example.com"
+            />
+            <mat-icon matPrefix>mail_outline</mat-icon>
+            <mat-error *ngIf="email?.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="email?.hasError('email')">Please enter a valid email</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              data-test-id="password-input"
+              placeholder="••••••••"
+            />
+            <mat-icon matPrefix>lock_outline</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="togglePasswordVisibility()"
+              type="button"
+              data-test-id="toggle-password"
+            >
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="password?.hasError('required')">Password is required</mat-error>
+          </mat-form-field>
+
+          <div class="forgot-password-link">
+            <a routerLink="/forgot-password">Forgot password?</a>
+          </div>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="full-width submit-btn"
+            [disabled]="loginForm.invalid || loading"
+            data-test-id="login-button"
+          >
+            <span *ngIf="!loading">Log In</span>
+            <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>OR</span>
+        </div>
+
+        <button
+          mat-stroked-button
+          type="button"
+          class="full-width google-btn"
+          (click)="onGoogleLogin()"
+          [disabled]="loading"
+        >
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" class="google-logo">
+          Continue with Google
+        </button>
+
+        <p class="signup-link">
+          Don&apos;t have an account?
+          <a routerLink="/signup" data-test-id="signup-link">Sign up</a>
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+

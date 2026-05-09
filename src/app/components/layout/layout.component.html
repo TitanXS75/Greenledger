@@ -1,0 +1,104 @@
+<mat-toolbar color="primary" class="app-toolbar" data-test-id="app-toolbar">
+  <button
+    mat-icon-button
+    (click)="toggleSidenav()"
+    data-test-id="toggle-sidenav"
+    class="menu-button"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="app-title">GreenLedger</span>
+
+  <span class="spacer"></span>
+
+  <button mat-icon-button [matMenuTriggerFor]="userMenu" data-test-id="user-menu-trigger">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <mat-menu #userMenu="matMenu" data-test-id="user-menu">
+    <button mat-menu-item routerLink="/profile">
+      <mat-icon>person</mat-icon>
+      <span>Profile</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="logout()" data-test-id="logout-button">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #sidenav
+    class="app-sidenav"
+    [opened]="isSidenavOpen"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    data-test-id="app-sidenav"
+  >
+    <mat-nav-list>
+      <mat-list-item
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        data-test-id="nav-dashboard"
+      >
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </mat-list-item>
+
+      <mat-list-item
+        routerLink="/expenses"
+        routerLinkActive="active"
+        data-test-id="nav-expenses"
+      >
+        <mat-icon matListItemIcon>receipt</mat-icon>
+        <span matListItemTitle>Expenses</span>
+      </mat-list-item>
+
+      <mat-list-item
+        routerLink="/summary"
+        routerLinkActive="active"
+        data-test-id="nav-summary"
+      >
+        <mat-icon matListItemIcon>assessment</mat-icon>
+        <span matListItemTitle>Summary</span>
+      </mat-list-item>
+      <mat-list-item
+        routerLink="/profile"
+        routerLinkActive="active"
+        data-test-id="nav-profile"
+      >
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle>Profile</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <div class="main-content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+    
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-nav" *ngIf="isHandset$ | async">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>dashboard</mat-icon>
+        <span>Home</span>
+      </a>
+      <a routerLink="/expenses" routerLinkActive="active">
+        <mat-icon>receipt</mat-icon>
+        <span>Expenses</span>
+      </a>
+      <a routerLink="/summary" routerLinkActive="active">
+        <mat-icon>assessment</mat-icon>
+        <span>Summary</span>
+      </a>
+      <a routerLink="/profile" routerLinkActive="active">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </a>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

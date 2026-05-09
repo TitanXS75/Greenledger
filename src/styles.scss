@@ -1,0 +1,112 @@
+// Material Theme
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+// Global Styles
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #fafafa;
+}
+
+// Material Overrides
+.mat-mdc-toolbar {
+  background-color: #1e3c72 !important;
+  color: white;
+
+  .mat-mdc-toolbar-row {
+    height: 64px;
+    padding: 0 16px;
+  }
+
+  button {
+    color: white;
+  }
+}
+
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+.mat-mdc-dialog-container {
+  .mat-mdc-dialog-title {
+    margin: 0;
+  }
+}
+
+// Scrollbar Styling
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+
+  &:hover {
+    background: #555;
+  }
+}
+
+// Material Icons
+.mat-icon {
+  user-select: none;
+}
+
+// Utility Classes
+.full-width {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-0 { margin-top: 0; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+
+.mb-0 { margin-bottom: 0; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+
+.p-16 { padding: 16px; }
+.p-24 { padding: 24px; }
+.px-16 { padding-left: 16px; padding-right: 16px; }
+.py-16 { padding-top: 16px; padding-bottom: 16px; }
+
+// Responsive
+@media (max-width: 768px) {
+  body {
+    font-size: 13px;
+  }
+}
+
+// Print Styles
+@media print {
+  .no-print {
+    display: none;
+  }
+}

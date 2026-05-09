@@ -1,0 +1,102 @@
+<div class="summary-container">
+  <div class="page-header">
+    <h1>Expense Summary</h1>
+    <p class="subtitle">Analyze your spending patterns</p>
+  </div>
+
+  <!-- Filters Section -->
+  <mat-card class="filter-card">
+    <mat-card-content>
+      <form [formGroup]="summaryForm" class="summary-filters">
+        <mat-button-toggle-group formControlName="mode" aria-label="Summary Mode" class="mode-toggle">
+          <mat-button-toggle value="today">Today</mat-button-toggle>
+          <mat-button-toggle value="monthly">Monthly</mat-button-toggle>
+          <mat-button-toggle value="range">Date Range</mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <div class="date-controls">
+          <!-- Today Mode -->
+          <mat-form-field appearance="outline" *ngIf="summaryForm.get('mode')?.value === 'today'">
+            <mat-label>Select Date</mat-label>
+            <input matInput [matDatepicker]="dailyPicker" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="dailyPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dailyPicker></mat-datepicker>
+          </mat-form-field>
+
+          <!-- Monthly Mode -->
+          <mat-form-field appearance="outline" *ngIf="summaryForm.get('mode')?.value === 'monthly'">
+            <mat-label>Select Month</mat-label>
+            <input matInput type="month" formControlName="month">
+            <mat-icon matSuffix>calendar_month</mat-icon>
+          </mat-form-field>
+
+          <!-- Range Mode -->
+          <div class="range-inputs" *ngIf="summaryForm.get('mode')?.value === 'range'">
+            <mat-form-field appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Results Section -->
+  <div class="results-grid">
+    <!-- Grand Total Card -->
+    <mat-card class="total-card">
+      <mat-card-content>
+        <div class="total-display">
+          <span class="label">Grand Total</span>
+          <h2 class="amount">₹{{ grandTotal.toFixed(2) }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Category Breakdown -->
+    <mat-card class="breakdown-card">
+      <mat-card-header>
+        <mat-card-title>Breakdown by Category</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div *ngIf="categories.length > 0" class="categories-list">
+          <div *ngFor="let category of categories" class="category-item">
+            <div class="category-info-row">
+              <div class="category-main">
+                <div class="icon-box">
+                  <mat-icon>{{ getCategoryIcon(category) }}</mat-icon>
+                </div>
+                <div class="name-box">
+                  <span class="category-name">{{ category }}</span>
+                  <span class="percentage-label">{{ getPercentage(categoryTotals[category]).toFixed(1) }}%</span>
+                </div>
+              </div>
+              <span class="category-amount">₹{{ categoryTotals[category].toFixed(2) }}</span>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              [value]="getPercentage(categoryTotals[category])"
+              class="custom-progress"
+            ></mat-progress-bar>
+          </div>
+        </div>
+
+        <div *ngIf="categories.length === 0" class="empty-state">
+          <mat-icon>sentiment_dissatisfied</mat-icon>
+          <p>No data found for the selected period.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

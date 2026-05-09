@@ -1,0 +1,113 @@
+<div class="login-page">
+  <div class="side-image-container">
+    <div class="image-overlay">
+      <div class="overlay-content">
+        <h1>Join GreenLedger</h1>
+        <p>Start your journey towards financial clarity and environmental impact. Create an account to get started.</p>
+      </div>
+    </div>
+    <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=2671&auto=format&fit=crop" alt="Sustainable Growth" class="side-image">
+  </div>
+
+  <div class="form-container">
+    <mat-card class="login-card" data-test-id="signup-card">
+      <mat-card-header>
+        <div class="logo-container">
+          <mat-icon class="leaf-icon">eco</mat-icon>
+          <mat-card-title>Create Account</mat-card-title>
+        </div>
+        <mat-card-subtitle>Join the sustainable finance movement</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+          <div *ngIf="error" class="error-message" data-test-id="error-message">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ error }}</span>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Full Name</mat-label>
+            <input
+              matInput
+              formControlName="displayName"
+              data-test-id="name-input"
+              placeholder="John Doe"
+            />
+            <mat-icon matPrefix>person_outline</mat-icon>
+            <mat-error *ngIf="displayName?.hasError('required')">Name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              data-test-id="email-input"
+              placeholder="your.email@example.com"
+            />
+            <mat-icon matPrefix>mail_outline</mat-icon>
+            <mat-error *ngIf="email?.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="email?.hasError('email')">Please enter a valid email</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              data-test-id="password-input"
+              placeholder="••••••••"
+            />
+            <mat-icon matPrefix>lock_outline</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="togglePasswordVisibility()"
+              type="button"
+              data-test-id="toggle-password"
+            >
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="password?.hasError('required')">Password is required</mat-error>
+            <mat-error *ngIf="password?.hasError('minlength')">Minimum 6 characters required</mat-error>
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="full-width submit-btn"
+            [disabled]="signupForm.invalid || loading"
+            data-test-id="signup-button"
+          >
+            <span *ngIf="!loading">Create Account</span>
+            <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>OR</span>
+        </div>
+
+        <button
+          mat-stroked-button
+          type="button"
+          class="full-width google-btn"
+          (click)="onGoogleLogin()"
+          [disabled]="loading"
+        >
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" class="google-logo">
+          Sign up with Google
+        </button>
+
+        <p class="signup-link">
+          Already have an account?
+          <a routerLink="/login" data-test-id="login-link">Sign in</a>
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

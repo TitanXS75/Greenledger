@@ -1,0 +1,77 @@
+<div class="dashboard-container" data-test-id="dashboard-container">
+  <div class="page-header">
+    <h1>Welcome, {{ currentUser?.displayName }}! 👋</h1>
+    <p class="subtitle">Here's your expense summary at a glance</p>
+  </div>
+
+  <div class="stats-grid">
+    <!-- Total Expenses Card -->
+    <mat-card class="stat-card" data-test-id="total-expenses-card">
+      <mat-card-content>
+        <div class="card-icon">
+          <mat-icon>wallet</mat-icon>
+        </div>
+        <div class="card-info">
+          <p class="stat-label">Total Expenses</p>
+          <h2 class="stat-value">₹{{ totalExpenses.toFixed(2) }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Monthly Expenses Card -->
+    <mat-card class="stat-card monthly" data-test-id="monthly-expenses-card">
+      <mat-card-content>
+        <div class="card-icon">
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+        <div class="card-info">
+          <p class="stat-label">This Month</p>
+          <h2 class="stat-value">₹{{ monthlyExpenses.toFixed(2) }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Today's Expenses Card -->
+    <mat-card class="stat-card today" data-test-id="today-expenses-card">
+      <mat-card-content>
+        <div class="card-icon">
+          <mat-icon>today</mat-icon>
+        </div>
+        <div class="card-info">
+          <p class="stat-label">Today</p>
+          <h2 class="stat-value">₹{{ todayExpenses.toFixed(2) }}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="actions-section">
+    <h2>Quick Actions</h2>
+    <div class="action-buttons">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="openCalculator()"
+        data-test-id="open-calc-btn"
+      >
+        <mat-icon>calculate</mat-icon>
+        Quick Calc
+      </button>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="expenses.length === 0">
+    <mat-icon class="empty-icon">inbox</mat-icon>
+    <h3>No Expenses Yet</h3>
+    <p>Start tracking your expenses to see your financial overview</p>
+    <button
+      mat-raised-button
+      color="primary"
+      routerLink="/dashboard/expenses"
+      data-test-id="add-first-expense-btn"
+    >
+      <mat-icon>add</mat-icon>
+      Add Your First Expense
+    </button>
+  </div>
+</div>
