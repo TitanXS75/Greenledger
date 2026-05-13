@@ -10,8 +10,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../services/auth.service';
 import { AppUser } from '../../models/user.model';
+import { CalculatorComponent } from '../shared/calculator/calculator.component';
 
 @Component({
   selector: 'app-layout',
@@ -24,7 +26,8 @@ import { AppUser } from '../../models/user.model';
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
@@ -33,6 +36,7 @@ export class LayoutComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private dialog = inject(MatDialog);
 
   currentUser: AppUser | null = null;
   isSidenavOpen = true;
@@ -44,27 +48,48 @@ export class LayoutComponent implements OnInit {
     );
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(user => {
-      this.currentUser = user as any;
+    this.authService.user$.subscribe(async user => {
+      if (user) {
+        // Fetch real AppUser from Firestore so we have displayName and role
+        const userData = await this.authService.getUserData(user.uid);
+        if (userData) {
+          this.currentUser = userData;
+        } else {
+          // Fallback to FirebaseUser if Firestore data is missing
+          this.currentUser = { uid: user.uid, email: user.email || '', role: 'member', displayName: user.displayName || 'User' };
+        }
+      } else {
+        this.currentUser = null;
+      }
     });
 
     // On handset, close sidenav by default
     this.isHandset$.subscribe(isHandset => {
-      if (isHandset) {
-        this.isSidenavOpen = false;
-      } else {
-        this.isSidenavOpen = true;
-      }
+      this.isSidenavOpen = !isHandset;
     });
   }
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  closeOnMobile(): void {
+    this.isHandset$.subscribe(isHandset => {
+      if (isHandset) {
+        this.isSidenavOpen = false;
+      }
+    }).unsubscribe();
+  }
+
+  async logout(): Promise<void> {
+    await this.authService.logout();
   }
 
   toggleSidenav(): void {
     this.isSidenavOpen = !this.isSidenavOpen;
+  }
+
+  openCalculator(): void {
+    this.dialog.open(CalculatorComponent, {
+      width: '320px',
+      panelClass: 'calculator-dialog'
+    });
   }
 }
 

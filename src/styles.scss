@@ -43,6 +43,14 @@ html, body {
   }
 }
 
+.calculator-dialog {
+  .mat-mdc-dialog-container {
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
 // Scrollbar Styling
 ::-webkit-scrollbar {
   width: 8px;

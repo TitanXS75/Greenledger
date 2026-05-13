@@ -11,6 +11,10 @@
   <span class="app-title">GreenLedger</span>
 
   <span class="spacer"></span>
+  
+  <button mat-icon-button (click)="openCalculator()" matTooltip="Calculator">
+    <mat-icon>calculate</mat-icon>
+  </button>
 
   <button mat-icon-button [matMenuTriggerFor]="userMenu" data-test-id="user-menu-trigger">
     <mat-icon>account_circle</mat-icon>
@@ -38,41 +42,51 @@
     data-test-id="app-sidenav"
   >
     <mat-nav-list>
-      <mat-list-item
+      <a mat-list-item
         routerLink="/dashboard"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
         data-test-id="nav-dashboard"
+        (click)="closeOnMobile()"
       >
         <mat-icon matListItemIcon>dashboard</mat-icon>
         <span matListItemTitle>Dashboard</span>
-      </mat-list-item>
+      </a>
 
-      <mat-list-item
+      <a mat-list-item
         routerLink="/expenses"
         routerLinkActive="active"
         data-test-id="nav-expenses"
+        (click)="closeOnMobile()"
       >
         <mat-icon matListItemIcon>receipt</mat-icon>
         <span matListItemTitle>Expenses</span>
-      </mat-list-item>
+      </a>
 
-      <mat-list-item
+      <a mat-list-item
         routerLink="/summary"
         routerLinkActive="active"
         data-test-id="nav-summary"
+        (click)="closeOnMobile()"
       >
         <mat-icon matListItemIcon>assessment</mat-icon>
         <span matListItemTitle>Summary</span>
-      </mat-list-item>
-      <mat-list-item
+      </a>
+
+      <a mat-list-item (click)="openCalculator(); closeOnMobile()" style="cursor: pointer;">
+        <mat-icon matListItemIcon>calculate</mat-icon>
+        <span matListItemTitle>Calculator</span>
+      </a>
+
+      <a mat-list-item
         routerLink="/profile"
         routerLinkActive="active"
         data-test-id="nav-profile"
+        (click)="closeOnMobile()"
       >
         <mat-icon matListItemIcon>person</mat-icon>
         <span matListItemTitle>Profile</span>
-      </mat-list-item>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 

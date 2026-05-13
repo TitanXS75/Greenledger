@@ -4,105 +4,126 @@
   justify-content: center;
   background-color: #f8fafc;
   min-height: calc(100vh - 64px);
+  flex-direction: column;
+  align-items: center;
+}
 
-  .profile-card {
-    width: 100%;
-    max-width: 800px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px;
+  color: #64748b;
+}
 
-    .profile-header {
-      margin-bottom: 32px;
+.profile-card {
+  width: 100%;
+  max-width: 820px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 24px 20px;
+
+    .avatar-circle {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      border-radius: 50%;
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 16px;
-
-      .icon-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 56px;
-        height: 56px;
-        background-color: #e3f2fd;
-        border-radius: 50%;
-
-        mat-icon {
-          font-size: 32px;
-          width: 32px;
-          height: 32px;
-        }
-      }
-
-      .title-container {
-        mat-card-title {
-          font-size: 24px;
-          font-weight: 700;
-          margin: 0;
-          color: #1e293b;
-        }
-
-        mat-card-subtitle {
-          font-size: 14px;
-          color: #64748b;
-          margin: 4px 0 0 0;
-        }
-      }
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
     }
 
-    mat-card-content {
-      form {
+    .title-container {
+      mat-card-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 4px;
+        color: #1e293b;
+      }
+      mat-card-subtitle {
+        font-size: 14px;
+        color: #64748b;
+        margin: 0;
+      }
+    }
+  }
+
+  mat-card-content {
+    padding: 20px 24px 24px;
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 16px 0 12px;
+    }
+
+    .success-message, .error-message {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .success-message {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #d1fae5;
+    }
+
+    .error-message {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fee2e2;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .form-row {
         display: flex;
-        flex-direction: column;
-        gap: 24px;
+        gap: 20px;
 
-        .success-message {
+        .full-field { flex: 1; }
+
+        @media (max-width: 600px) {
+          flex-direction: column;
+          gap: 0;
+        }
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 16px;
+
+        button {
+          height: 48px;
+          padding: 0 32px;
+          font-weight: 600;
+          border-radius: 8px;
           display: flex;
           align-items: center;
           gap: 8px;
-          padding: 12px 16px;
-          background-color: #ecfdf5;
-          color: #065f46;
-          border-radius: 8px;
-          border: 1px solid #d1fae5;
-        }
-
-        .error-message {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 12px 16px;
-          background-color: #fef2f2;
-          color: #991b1b;
-          border-radius: 8px;
-          border: 1px solid #fee2e2;
-        }
-
-        .form-row {
-          display: flex;
-          gap: 20px;
-
-          mat-form-field {
-            flex: 1;
-          }
-
-          @media (max-width: 600px) {
-            flex-direction: column;
-            gap: 0;
-          }
-        }
-
-        .actions {
-          display: flex;
-          justify-content: flex-end;
-          margin-top: 12px;
-
-          button {
-            height: 48px;
-            padding: 0 32px;
-            font-weight: 600;
-            border-radius: 8px;
-          }
         }
       }
     }

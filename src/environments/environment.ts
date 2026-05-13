@@ -1,11 +1,12 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyCrAFs-sUX0DA6vzZC-v3rk642Zcnr47mM",
+    authDomain: "greenledger-43647.firebaseapp.com",
+    projectId: "greenledger-43647",
+    storageBucket: "greenledger-43647.firebasestorage.app",
+    messagingSenderId: "550854439674",
+    appId: "1:550854439674:web:e599d1a65f585689484f43",
+    measurementId: "G-12EZC11BXZ"
   }
 };

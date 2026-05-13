@@ -1,5 +1,23 @@
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background: #1e3c72;
+  color: white;
+  flex-shrink: 0;
+  
+  .app-title {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-size: 20px;
+  }
+
+  .spacer { flex: 1 1 auto; }
+}
+
 .sidenav-container {
-  height: 100vh;
+  height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
 
@@ -14,24 +32,6 @@
       font-weight: 600;
       mat-icon { color: #1e3c72; }
     }
-  }
-
-  .app-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    background: #1e3c72;
-    color: white;
-    flex-shrink: 0;
-    
-    .app-title {
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      font-size: 20px;
-    }
-
-    .spacer { flex: 1 1 auto; }
   }
 
   .content {
