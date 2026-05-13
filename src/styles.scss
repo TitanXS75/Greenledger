@@ -48,6 +48,12 @@ html, body {
     padding: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
+    border-radius: 16px !important;
+  }
+  .mdc-dialog__surface {
+    border-radius: 16px !important;
+    background: transparent !important;
+    box-shadow: none !important;
   }
 }
 

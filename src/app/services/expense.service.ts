@@ -10,12 +10,13 @@ import {
   collectionSnapshots,
   docSnapshots,
   DocumentData,
-  QueryDocumentSnapshot
+  QueryDocumentSnapshot,
+  orderBy
 } from '@angular/fire/firestore';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, map, of, tap, switchMap, from } from 'rxjs';
 import { Expense, DailySummary } from '../models/expense.model';
 import { CacheService } from './cache.service';
-import { Auth } from '@angular/fire/auth';
+import { Auth, authState } from '@angular/fire/auth';
 
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
@@ -24,42 +25,61 @@ export class ExpenseService {
   private auth = inject(Auth);
 
   getExpenses(): Observable<Expense[]> {
-    const user = this.auth.currentUser;
-    if (!user) return of([]);
+    // Reactively wait for user auth state
+    return authState(this.auth).pipe(
+      switchMap(user => {
+        if (!user) return of([]);
 
-    const expensesRef = collection(this.firestore, 'expenses');
-    const q = query(expensesRef, where('createdBy', '==', user.uid), where('isDeleted', '!=', true));
-    
-    return collectionSnapshots(q).pipe(
-      map((actions: QueryDocumentSnapshot<DocumentData>[]) => actions.map(a => {
-        const data = a.data() as Expense;
-        const id = a.id;
-        return { ...data, id };
-      })),
-      tap(expenses => this.cache.setCachedExpenses('user_expenses', expenses))
+        const expensesRef = collection(this.firestore, 'expenses');
+        const q = query(
+          expensesRef, 
+          where('createdBy', '==', user.uid)
+        );
+        
+        return collectionSnapshots(q).pipe(
+          map((actions: QueryDocumentSnapshot<DocumentData>[]) => 
+            actions.map(a => {
+              const data = a.data() as Expense;
+              return { ...data, id: a.id };
+            })
+            // Client-side filter and sort
+            .filter(e => e.isDeleted !== true)
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          ),
+          tap(expenses => this.cache.setCachedExpenses('user_expenses', expenses))
+        );
+      })
     );
   }
 
-  addExpense(expense: Omit<Expense, 'id'>): Promise<any> {
+  async addExpense(expense: Omit<Expense, 'id' | 'createdBy' | 'createdAt'>): Promise<any> {
+    const user = this.auth.currentUser;
+    if (!user) throw new Error('User not authenticated');
+
     const expensesRef = collection(this.firestore, 'expenses');
-    return addDoc(expensesRef, {
+    const newExpense = {
       ...expense,
-      createdBy: this.auth.currentUser?.uid,
-      createdAt: new Date().toISOString()
-    });
+      amount: Number(expense.amount), // Ensure it's a number
+      createdBy: user.uid,
+      createdAt: new Date().toISOString(),
+      isDeleted: false
+    };
+
+    console.log('Adding expense to Firestore:', newExpense);
+    return await addDoc(expensesRef, newExpense);
   }
 
-  updateExpense(id: string, data: Partial<Expense>): Promise<void> {
+  async updateExpense(id: string, data: Partial<Expense>): Promise<void> {
     const expenseDoc = doc(this.firestore, `expenses/${id}`);
-    return updateDoc(expenseDoc, {
+    return await updateDoc(expenseDoc, {
       ...data,
       updatedAt: new Date().toISOString()
     });
   }
 
-  softDeleteExpense(id: string): Promise<void> {
+  async softDeleteExpense(id: string): Promise<void> {
     const expenseDoc = doc(this.firestore, `expenses/${id}`);
-    return updateDoc(expenseDoc, {
+    return await updateDoc(expenseDoc, {
       isDeleted: true,
       updatedAt: new Date().toISOString()
     });

@@ -65,8 +65,13 @@ export class ExpenseTrackerComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(ExpenseActions.loadExpenses());
     
-    // Check if admin (simplified for demo, should be from a selector/observable)
-    this.isAdmin = localStorage.getItem('user_role') === 'admin';
+    // Get user role from Firestore
+    const unsub = this.authService.user$.subscribe(async user => {
+      if (user) {
+        const userData = await this.authService.getUserData(user.uid);
+        this.isAdmin = userData?.role === 'admin';
+      }
+    });
 
     this.filterForm.valueChanges.pipe(debounceTime(300)).subscribe(filter => {
       this.store.dispatch(ExpenseActions.setFilter({ filter }));
@@ -104,12 +109,34 @@ export class ExpenseTrackerComponent implements OnInit {
 
   exportToPDF(): void {
     const doc = new jsPDF();
+    
+    // Add title to PDF
+    doc.setFontSize(18);
+    doc.text('GreenLedger Expense Report', 14, 22);
+    doc.setFontSize(11);
+    doc.setTextColor(100);
+    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
+
     this.filteredExpenses$.subscribe(data => {
+      const total = data.reduce((sum, exp) => sum + exp.amount, 0);
+      
       autoTable(doc, {
+        startY: 35,
         head: [['Date', 'Category', 'Description', 'Amount', 'Mode']],
-        body: data.map(e => [e.date, e.category, e.description, `₹${e.amount}`, e.paymentMode]),
+        body: data.map(e => [
+          e.date, 
+          e.category, 
+          e.description, 
+          `Rs. ${e.amount}`, // Use Rs. instead of ₹ to avoid encoding issues
+          e.paymentMode
+        ]),
+        foot: [['', '', 'GRAND TOTAL', `Rs. ${total}`, '']],
+        theme: 'grid',
+        headStyles: { fillColor: [30, 60, 114] },
+        footStyles: { fillColor: [241, 245, 249], textColor: [0, 0, 0], fontStyle: 'bold' }
       });
-      doc.save('GreenLedger_Expenses.pdf');
+
+      doc.save(`GreenLedger_Report_${new Date().toISOString().split('T')[0]}.pdf`);
     }).unsubscribe();
   }
 

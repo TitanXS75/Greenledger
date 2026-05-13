@@ -32,15 +32,15 @@
     .header-actions {
       display: flex;
       gap: 12px;
+      align-items: center;
 
-      .add-btn {
+      .export-btn, .add-btn {
         height: 48px;
         padding: 0 24px;
         border-radius: 12px;
         text-transform: none;
         font-weight: 600;
         font-size: 16px;
-        box-shadow: 0 4px 12px rgba(30, 60, 114, 0.2);
 
         mat-icon { 
           font-size: 24px; 
@@ -48,6 +48,10 @@
           height: 24px; 
           margin-right: 8px; 
         }
+      }
+
+      .add-btn {
+        box-shadow: 0 4px 12px rgba(30, 60, 114, 0.2);
       }
     }
   }

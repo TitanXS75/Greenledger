@@ -12,7 +12,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     <div class="calculator-container">
       <div class="calc-header">
         <mat-icon>calculate</mat-icon>
-        <span>Quick Calculator</span>
+        <span>QUICK CALCULATOR</span>
       </div>
       
       <div class="display">
@@ -21,70 +21,70 @@ import { MatDialogModule } from '@angular/material/dialog';
       </div>
       
       <div class="buttons-grid">
-        <button class="btn-tool" (click)="clear()">AC</button>
-        <button class="btn-tool" (click)="delete()">DEL</button>
-        <button class="btn-op" (click)="chooseOperation('÷')">÷</button>
-        <button class="btn-op" (click)="chooseOperation('*')">×</button>
+        <button class="btn-calc btn-tool" (click)="clear()">AC</button>
+        <button class="btn-calc btn-tool" (click)="delete()">DEL</button>
+        <button class="btn-calc btn-op" (click)="chooseOperation('÷')">÷</button>
+        <button class="btn-calc btn-op" (click)="chooseOperation('*')">×</button>
         
-        <button class="btn-num" (click)="appendNumber('7')">7</button>
-        <button class="btn-num" (click)="appendNumber('8')">8</button>
-        <button class="btn-num" (click)="appendNumber('9')">9</button>
-        <button class="btn-op" (click)="chooseOperation('-')">-</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('7')">7</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('8')">8</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('9')">9</button>
+        <button class="btn-calc btn-op" (click)="chooseOperation('-')">-</button>
         
-        <button class="btn-num" (click)="appendNumber('4')">4</button>
-        <button class="btn-num" (click)="appendNumber('5')">5</button>
-        <button class="btn-num" (click)="appendNumber('6')">6</button>
-        <button class="btn-op" (click)="chooseOperation('+')">+</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('4')">4</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('5')">5</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('6')">6</button>
+        <button class="btn-calc btn-op" (click)="chooseOperation('+')">+</button>
         
-        <button class="btn-num" (click)="appendNumber('1')">1</button>
-        <button class="btn-num" (click)="appendNumber('2')">2</button>
-        <button class="btn-num" (click)="appendNumber('3')">3</button>
-        <button class="btn-equal" (click)="compute()">=</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('1')">1</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('2')">2</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('3')">3</button>
+        <button class="btn-calc btn-equal" (click)="compute()">=</button>
         
-        <button class="btn-num span-two" (click)="appendNumber('0')">0</button>
-        <button class="btn-num" (click)="appendNumber('.')">.</button>
+        <button class="btn-calc btn-num span-two" (click)="appendNumber('0')">0</button>
+        <button class="btn-calc btn-num" (click)="appendNumber('.')">.</button>
       </div>
     </div>
   `,
   styles: [`
     .calculator-container {
-      width: 320px;
-      background-color: #0f172a;
-      border-radius: 24px;
-      padding: 20px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      background-color: #1e3c72; /* Site Primary Dark Blue */
+      border-radius: 16px;
+      padding: 24px;
       color: white;
       user-select: none;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
     }
 
     .calc-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: #94a3b8;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.7);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 16px;
-      mat-icon { font-size: 16px; width: 16px; height: 16px; }
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+      mat-icon { font-size: 18px; width: 18px; height: 18px; }
     }
 
     .display {
-      background-color: #1e293b;
-      padding: 24px 16px;
-      border-radius: 16px;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 12px;
       margin-bottom: 24px;
       text-align: right;
       min-height: 100px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      border: 1px solid #334155;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .previous {
-      color: #64748b;
+      color: rgba(255, 255, 255, 0.5);
       font-size: 14px;
       min-height: 20px;
       font-family: 'Roboto Mono', monospace;
@@ -93,7 +93,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     .current {
       font-size: 36px;
       font-weight: 600;
-      color: #f8fafc;
+      color: white;
       overflow: hidden;
       text-overflow: ellipsis;
       font-family: 'Roboto Mono', monospace;
@@ -105,53 +105,52 @@ import { MatDialogModule } from '@angular/material/dialog';
       gap: 12px;
     }
 
-    button {
+    .btn-calc {
       height: 56px;
       border: none;
-      border-radius: 16px;
+      border-radius: 12px;
       font-size: 18px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
       
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
       &:active {
-        transform: scale(0.92);
+        transform: translateY(0);
       }
     }
 
     .btn-num {
-      background-color: #334155;
-      color: #f8fafc;
-      &:hover { background-color: #475569; }
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     .btn-op {
-      background-color: #1e3c72;
-      color: #38bdf8;
-      font-size: 22px;
-      &:hover { background-color: #2563eb; color: white; }
+      background-color: #2a5298; /* Lighter Blue from theme */
+      color: #38bdf8; /* Highlight Blue */
     }
 
     .btn-tool {
-      background-color: #1e293b;
-      color: #94a3b8;
-      font-size: 14px;
-      &:hover { background-color: #334155; color: #f8fafc; }
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
     }
 
     .btn-equal {
       grid-row: span 2;
       height: auto;
-      background: linear-gradient(135deg, #2563eb 0%, #1e3c72 100%);
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); /* Green Theme */
       color: white;
-      font-size: 24px;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
       &:hover {
-        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
-        filter: brightness(1.1);
+        box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
       }
     }
 
@@ -203,7 +202,6 @@ export class CalculatorComponent {
       case '÷': computation = prev / current; break;
       default: return;
     }
-    // Round to 2 decimal places to keep it clean
     this.currentOperand = (Math.round(computation * 100) / 100).toString();
     this.operation = undefined;
     this.prevOperand = '';

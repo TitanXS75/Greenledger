@@ -43,30 +43,12 @@
     </mat-form-field>
 
     <!-- Category Section -->
-    <mat-form-field appearance="outline" class="full-width" *ngIf="!showCustomCategoryInput">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Category</mat-label>
-      <mat-select formControlName="category" (selectionChange)="onCategoryChange($event)">
+      <mat-select formControlName="category">
         <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
-        <mat-divider></mat-divider>
-        <mat-option value="CUSTOM">Add Custom...</mat-option>
       </mat-select>
     </mat-form-field>
-
-    <!-- Custom Category Input with Save Button -->
-    <div class="custom-category-input" *ngIf="showCustomCategoryInput">
-      <mat-form-field appearance="outline" class="flex-grow">
-        <mat-label>New Category Name</mat-label>
-        <input matInput formControlName="newCategory" placeholder="e.g. Subscriptions">
-      </mat-form-field>
-      <div class="btn-group">
-        <button mat-icon-button color="warn" type="button" (click)="showCustomCategoryInput = false">
-          <mat-icon>close</mat-icon>
-        </button>
-        <button mat-icon-button color="primary" type="button" (click)="saveCustomCategory()" [disabled]="!expenseForm.get('newCategory')?.value">
-          <mat-icon>save</mat-icon>
-        </button>
-      </div>
-    </div>
 
     <!-- Description Field -->
     <mat-form-field appearance="outline" class="full-width">

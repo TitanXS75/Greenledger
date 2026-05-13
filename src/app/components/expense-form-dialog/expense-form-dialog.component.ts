@@ -41,7 +41,6 @@ export class ExpenseFormDialogComponent {
   maxDate = new Date();
   
   quickAmounts: number[] = [100];
-  showCustomCategoryInput = false;
   showQuickAmountInput = false;
   newQuickAmount: number | null = null;
 
@@ -53,7 +52,6 @@ export class ExpenseFormDialogComponent {
     this.expenseForm = this.fb.group({
       amount: [data.expense?.amount || '', [Validators.required, Validators.min(1)]],
       category: [data.expense?.category || '', Validators.required],
-      newCategory: [''],
       description: [data.expense?.description || '', [Validators.required, Validators.maxLength(200)]],
       date: [data.expense ? new Date(data.expense.date) : new Date(), Validators.required],
       paymentMode: [data.expense?.paymentMode || PaymentMode.CASH, Validators.required]
@@ -96,32 +94,6 @@ export class ExpenseFormDialogComponent {
     this.expenseForm.patchValue({ amount });
   }
 
-  onCategoryChange(event: any): void {
-    if (event.value === 'CUSTOM') {
-      this.showCustomCategoryInput = true;
-      this.expenseForm.get('category')?.setValidators(null);
-      this.expenseForm.get('newCategory')?.setValidators([Validators.required]);
-    } else {
-      this.showCustomCategoryInput = false;
-      this.expenseForm.get('category')?.setValidators([Validators.required]);
-      this.expenseForm.get('newCategory')?.setValidators(null);
-    }
-    this.expenseForm.get('category')?.updateValueAndValidity();
-    this.expenseForm.get('newCategory')?.updateValueAndValidity();
-  }
-
-  saveCustomCategory(): void {
-    const newCat = this.expenseForm.get('newCategory')?.value;
-    if (newCat) {
-      // Add to local list if not exists
-      if (!this.categories.includes(newCat)) {
-        this.categories.push(newCat);
-      }
-      this.expenseForm.patchValue({ category: newCat });
-      this.showCustomCategoryInput = false;
-    }
-  }
-
   onCancel(): void {
     this.dialogRef.close();
   }
@@ -135,15 +107,9 @@ export class ExpenseFormDialogComponent {
   onSubmit(): void {
     if (this.expenseForm.valid) {
       const val = this.expenseForm.getRawValue();
-      let category = val.category;
-      if (this.showCustomCategoryInput && val.newCategory) {
-        category = val.newCategory;
-      }
-      
       const dateStr = new Date(val.date).toISOString().split('T')[0];
       this.dialogRef.close({ 
         ...val, 
-        category,
         date: dateStr 
       });
     }
