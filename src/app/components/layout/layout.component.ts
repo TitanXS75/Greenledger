@@ -14,6 +14,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../services/auth.service';
 import { AppUser } from '../../models/user.model';
 import { CalculatorComponent } from '../shared/calculator/calculator.component';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-layout',
@@ -50,12 +51,10 @@ export class LayoutComponent implements OnInit {
   ngOnInit(): void {
     this.authService.user$.subscribe(async user => {
       if (user) {
-        // Fetch real AppUser from Firestore so we have displayName and role
         const userData = await this.authService.getUserData(user.uid);
         if (userData) {
           this.currentUser = userData;
         } else {
-          // Fallback to FirebaseUser if Firestore data is missing
           this.currentUser = { uid: user.uid, email: user.email || '', role: 'member', displayName: user.displayName || 'User' };
         }
       } else {
@@ -63,7 +62,6 @@ export class LayoutComponent implements OnInit {
       }
     });
 
-    // On handset, close sidenav by default
     this.isHandset$.subscribe(isHandset => {
       this.isSidenavOpen = !isHandset;
     });
@@ -78,7 +76,18 @@ export class LayoutComponent implements OnInit {
   }
 
   async logout(): Promise<void> {
-    await this.authService.logout();
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Logout Confirmation',
+        message: 'Are you sure you want to log out of GreenLedger?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.authService.logout();
+      }
+    });
   }
 
   toggleSidenav(): void {
@@ -92,4 +101,3 @@ export class LayoutComponent implements OnInit {
     });
   }
 }
-

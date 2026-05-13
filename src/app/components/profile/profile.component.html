@@ -48,8 +48,11 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="full-field">
             <mat-label>Contact Number</mat-label>
-            <input matInput formControlName="contact" placeholder="+91 98765 43210">
+            <input matInput formControlName="contact" placeholder="9876543210" maxlength="10">
             <mat-icon matPrefix>phone</mat-icon>
+            <mat-error *ngIf="profileForm.get('contact')?.hasError('pattern')">
+              Must be exactly 10 digits
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-field">

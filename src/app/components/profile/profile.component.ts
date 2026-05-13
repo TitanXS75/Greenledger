@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
     this.profileForm = this.fb.group({
       displayName: ['', Validators.required],
       email: [{ value: '', disabled: true }],
-      contact: [''],
+      contact: ['', [Validators.pattern('^[0-9]{10}$'), Validators.maxLength(10)]],
       age: [null]
     });
   }
