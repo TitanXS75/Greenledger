@@ -18,14 +18,13 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'expenses', component: ExpenseTrackerComponent, canActivate: [roleGuard] },
+      { path: 'expenses', component: ExpenseTrackerComponent },
       { path: 'profile', loadComponent: () => import('./components/profile/profile.component').then(m => m.ProfileComponent) },
       {
         path: 'summary',
         loadComponent: () =>
           import('./components/expense-summary/expense-summary.component')
             .then(m => m.ExpenseSummaryComponent),
-        canActivate: [roleGuard],
       }
     ]
   },

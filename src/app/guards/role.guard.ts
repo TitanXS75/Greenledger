@@ -31,14 +31,16 @@ export const roleGuard: CanActivateFn = async (route, state) => {
     }
 
     const userData = userSnap.data() as DocumentData;
-    if (userData && (userData['role'] === 'admin' || userData['role'] === 'member')) {
-      return true;
+    // Allow all authenticated users (admin or member). 
+    // Only explicitly block if role is 'blocked' or similar denial roles.
+    if (userData && userData['role'] === 'blocked') {
+      router.navigate(['/dashboard']);
+      return false;
     }
 
-    router.navigate(['/dashboard']);
-    return false;
+    return true;
   } catch (e) {
-    // On Firestore error (e.g. offline), allow access rather than blocking
+    // On Firestore error (e.g. offline or permissions), allow access
     console.warn('roleGuard: Firestore check failed, allowing access', e);
     return true;
   }

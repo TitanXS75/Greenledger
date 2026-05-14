@@ -37,7 +37,7 @@
     <!-- Main Amount Field -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Amount (₹)</mat-label>
-      <input matInput type="number" step="1" min="1" formControlName="amount" placeholder="0">
+      <input matInput type="number" step="1" min="1" formControlName="amount" placeholder="0" data-test-id="gl-expense-form-amount">
       <mat-error *ngIf="amount?.hasError('required')">Amount is required</mat-error>
       <mat-error *ngIf="amount?.hasError('min')">Amount must be at least ₹1</mat-error>
     </mat-form-field>
@@ -45,7 +45,7 @@
     <!-- Category Section -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Category</mat-label>
-      <mat-select formControlName="category">
+      <mat-select formControlName="category" data-test-id="gl-expense-form-category">
         <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -53,7 +53,7 @@
     <!-- Description Field -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description" rows="2" placeholder="What was this for?"></textarea>
+      <textarea matInput formControlName="description" rows="2" placeholder="What was this for?" data-test-id="gl-expense-form-desc"></textarea>
       <mat-error *ngIf="description?.hasError('required')">Description is required</mat-error>
     </mat-form-field>
 
@@ -93,6 +93,7 @@
       (click)="onSubmit()" 
       [disabled]="expenseForm.invalid"
       class="submit-btn"
+      data-test-id="gl-expense-form-submit"
     >
       {{ !data.expense ? 'Add Expense' : 'Update' }}
     </button>

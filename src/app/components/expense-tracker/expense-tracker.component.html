@@ -6,11 +6,11 @@
         <p class="subtitle">Track and manage your spending</p>
       </div>
       <div class="header-actions">
-        <button mat-stroked-button color="accent" (click)="exportToPDF()" class="export-btn">
+        <button mat-stroked-button color="accent" (click)="exportToPDF()" class="export-btn" data-test-id="gl-export-pdf-btn">
           <mat-icon>picture_as_pdf</mat-icon>
           <span>Export PDF</span>
         </button>
-        <button mat-raised-button color="primary" (click)="openAddDialog()" class="add-btn">
+        <button mat-raised-button color="primary" (click)="openAddDialog()" class="add-btn" data-test-id="gl-add-expense-btn">
           <mat-icon>add</mat-icon>
           <span>Add Expense</span>
         </button>
@@ -22,13 +22,13 @@
       <form [formGroup]="filterForm" class="filter-form">
         <mat-form-field appearance="outline" class="search-field">
           <mat-label>Search Description</mat-label>
-          <input matInput formControlName="searchText" placeholder="Search...">
+          <input matInput formControlName="searchText" placeholder="Search..." data-test-id="gl-search-input">
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="category-field">
           <mat-label>Category</mat-label>
-          <mat-select formControlName="category">
+          <mat-select formControlName="category" data-test-id="gl-category-filter">
             <mat-option [value]="null">All Categories</mat-option>
             <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
           </mat-select>
@@ -69,10 +69,10 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let row" class="actions-cell">
-              <button mat-icon-button color="primary" (click)="editExpense(row)" matTooltip="Edit">
+              <button mat-icon-button color="primary" (click)="editExpense(row)" matTooltip="Edit" data-test-id="gl-edit-btn">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button *ngIf="isAdmin" mat-icon-button color="warn" (click)="deleteExpense(row.id)" matTooltip="Delete">
+              <button *ngIf="isAdmin" mat-icon-button color="warn" (click)="deleteExpense(row.id)" matTooltip="Delete" data-test-id="gl-delete-btn">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
