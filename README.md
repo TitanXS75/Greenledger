@@ -16,7 +16,7 @@ GreenLedger is a modern, professional, and sustainable expense tracking applicat
 
 - **Framework**: [Angular 18](https://angular.io/)
 - **State Management**: [NgRx](https://ngrx.io/)
-- **Styling**: Vanilla CSS with modern design principles (Glassmorphism, Vibrant Palettes).
+- **Styling**: CSS with modern Plain design principles.
 - **Database/Auth**: [Firebase](https://firebase.google.com/)
 - **Utility Libraries**: Dexie.js (IndexedDB), CryptoJS, jsPDF, RxJS.
 
