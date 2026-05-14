@@ -19,6 +19,7 @@ node_modules
 dist/
 tmp/
 out/
+src/environments/environment.prod.ts
 # Firebase
 .firebase/
 firebase-debug.log

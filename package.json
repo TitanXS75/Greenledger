@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "dev": "ng serve --open",
-    "build": "ng build",
+    "build": "node scripts/set-env.js && ng build",
     "test": "ng test",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
